@@ -19,23 +19,10 @@ class SampleInteractor(
      */
     fun task1(): Flow<String> {
         return sampleRepository.produceNumbers()
-            .transform<Int, Int> { number ->
-                val result = number * 5
-                emit(result.toInt())
-            }
-            .transform { number ->
-                if (number >= 20) {
-                    emit(number)
-                }
-            }
-            .transform { number ->
-                if (number % 2 != 0) {
-                    emit(number)
-                }
-            }
-            .transform { number ->
-                emit("$number won")
-            }
+            .map { it * 5 }
+            .filter { it > 20 }
+            .filter { it % 2 != 0 }
+            .map { "$it won" }
             .take(3)
     }
 
